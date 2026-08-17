@@ -120,6 +120,19 @@
     outline: none;
   }
 
+  .submit[disabled] {
+    background: #6b6b6b;
+    cursor: default;
+  }
+
+  .error {
+    color: #b3261e;
+    font-weight: 500;
+    font-size: 14px;
+    margin-top: 10px;
+    min-height: 18px;
+  }
+
   .final {
     font-weight: 600;
     font-size: 19px;
@@ -158,22 +171,22 @@
 
     <div class="step active" data-step="1">
       <p class="question">1. What concerns you most about your tap water?</p>
-      <button class="option" onclick="next()">Taste or smell</button>
-      <button class="option" onclick="next()">Chemicals, contaminants or bacteria</button>
-      <button class="option" onclick="next()">Hard water, minerals or sediment</button>
+      <button class="option" onclick="next(this)">Taste or smell</button>
+      <button class="option" onclick="next(this)">Chemicals, contaminants or bacteria</button>
+      <button class="option" onclick="next(this)">Hard water, minerals or sediment</button>
     </div>
 
     <div class="step" data-step="2">
       <p class="question">2. What water do you mainly drink at home?</p>
-      <button class="option" onclick="next()">Straight from the tap</button>
-      <button class="option" onclick="next()">Filtered water</button>
-      <button class="option" onclick="next()">Bottled water</button>
+      <button class="option" onclick="next(this)">Straight from the tap</button>
+      <button class="option" onclick="next(this)">Filtered water</button>
+      <button class="option" onclick="next(this)">Bottled water</button>
     </div>
 
     <div class="step" data-step="3">
       <p class="question">3. Are you interested in different water filter solutions to restore your water quality?</p>
-      <button class="option" onclick="next()">Yes</button>
-      <button class="option" onclick="next()">No</button>
+      <button class="option" onclick="next(this)">Yes</button>
+      <button class="option" onclick="next(this)">No</button>
     </div>
 
     <div class="step" data-step="4">
@@ -181,7 +194,8 @@
       <input class="field" type="text" id="name" placeholder="Name" autocomplete="name">
       <input class="field" type="email" id="email" placeholder="Email" autocomplete="email">
       <input class="field" type="tel" id="phone" placeholder="Phone" autocomplete="tel">
-      <button class="submit" onclick="submitForm()">Submit</button>
+      <button class="submit" id="submitBtn" onclick="submitForm()">Submit</button>
+      <p class="error" id="error"></p>
     </div>
 
     <div class="step" data-step="5">
@@ -190,11 +204,25 @@
   </div>
 
 <script>
+  var WEBHOOK_URL = 'https://hooks.zapier.com/hooks/catch/16453711/4thgzx1/';
+
   var current = 1;
   var total = 5;
   var bar = document.getElementById('bar');
+  var startedAt = new Date();
 
-  function next() {
+  // Answers keyed by step number, so the payload field names stay stable
+  // even if the wording of a question changes.
+  var answers = {
+    1: '',
+    2: '',
+    3: ''
+  };
+
+  function next(button) {
+    if (button && answers.hasOwnProperty(current)) {
+      answers[current] = button.textContent.trim();
+    }
     var from = document.querySelector('.step[data-step="' + current + '"]');
     current++;
     var to = document.querySelector('.step[data-step="' + current + '"]');
@@ -205,17 +233,74 @@
     bar.style.width = ((current - 1) / (total - 1) * 100) + '%';
   }
 
+  function questionText(step) {
+    var el = document.querySelector('.step[data-step="' + step + '"] .question');
+    return el ? el.textContent.trim() : '';
+  }
+
   function submitForm() {
+    var button = document.getElementById('submitBtn');
+    var error = document.getElementById('error');
     var name = document.getElementById('name').value.trim();
     var email = document.getElementById('email').value.trim();
     var phone = document.getElementById('phone').value.trim();
+
+    error.textContent = '';
+
     if (!name || !email || !phone) {
-      alert('Please fill in all fields.');
+      error.textContent = 'Please fill in all fields.';
       return;
     }
-    // Send lead here (webhook/CRM endpoint):
-    // fetch('YOUR_WEBHOOK_URL', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ name: name, email: email, phone: phone }) });
-    next();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      error.textContent = 'Please enter a valid email address.';
+      return;
+    }
+
+    var now = new Date();
+    var params = new URLSearchParams();
+    params.set('name', name);
+    params.set('email', email);
+    params.set('phone', phone);
+    params.set('q1_question', questionText(1));
+    params.set('q1_answer', answers[1]);
+    params.set('q2_question', questionText(2));
+    params.set('q2_answer', answers[2]);
+    params.set('q3_question', questionText(3));
+    params.set('q3_answer', answers[3]);
+    params.set('survey', document.title);
+    params.set('submitted_at', now.toISOString());
+    params.set('submitted_at_local', now.toString());
+    params.set('seconds_to_complete', String(Math.round((now - startedAt) / 1000)));
+    params.set('page_url', window.location.href);
+    params.set('referrer', document.referrer);
+    params.set('user_agent', navigator.userAgent);
+
+    // Pass through any campaign tracking params present on the page URL.
+    var incoming = new URLSearchParams(window.location.search);
+    incoming.forEach(function (value, key) {
+      if (!params.has(key)) {
+        params.set(key, value);
+      }
+    });
+
+    button.disabled = true;
+    button.textContent = 'Submitting...';
+
+    // Form-encoded so the browser treats this as a simple request (no CORS
+    // preflight); Zapier maps each field separately.
+    fetch(WEBHOOK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+      body: params.toString(),
+      mode: 'no-cors',
+      keepalive: true
+    }).then(function () {
+      next();
+    }).catch(function () {
+      // The lead matters more than the confirmation, so don't dead-end the
+      // visitor if the request fails; show the thank-you step regardless.
+      next();
+    });
   }
 </script>
 
