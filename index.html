@@ -13,12 +13,33 @@
   body {
     font-family: 'Montserrat', Arial, sans-serif;
     background: #eceef0;
+    background-image:
+      radial-gradient(ellipse 90% 60% at 50% 0%, #dceef7 0%, rgba(220,238,247,0) 70%),
+      linear-gradient(180deg, #eef1f3 0%, #e7ecef 100%);
+    background-attachment: fixed;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 32px 20px;
+  }
+
+  /* Water motif behind the content: ripples and waves at very low opacity. */
+  .bg {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    opacity: .55;
+  }
+
+  .bg svg {
+    width: 100%;
+    height: 100%;
+    display: block;
   }
 
   .headline {
@@ -162,6 +183,50 @@
 </style>
 </head>
 <body>
+
+  <div class="bg" aria-hidden="true">
+    <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <g fill="none" stroke="#1c86bd" stroke-width="2">
+        <!-- Droplet ripples, upper left -->
+        <circle cx="250" cy="180" r="40" opacity=".18"/>
+        <circle cx="250" cy="180" r="78" opacity=".13"/>
+        <circle cx="250" cy="180" r="124" opacity=".09"/>
+        <circle cx="250" cy="180" r="178" opacity=".06"/>
+        <circle cx="250" cy="180" r="240" opacity=".04"/>
+        <!-- Droplet ripples, upper right -->
+        <circle cx="1210" cy="300" r="30" opacity=".15"/>
+        <circle cx="1210" cy="300" r="64" opacity=".11"/>
+        <circle cx="1210" cy="300" r="106" opacity=".075"/>
+        <circle cx="1210" cy="300" r="156" opacity=".05"/>
+      </g>
+
+      <!-- Rising bubbles -->
+      <g fill="#1c86bd">
+        <circle cx="140" cy="620" r="7" opacity=".10"/>
+        <circle cx="196" cy="540" r="4" opacity=".08"/>
+        <circle cx="118" cy="470" r="10" opacity=".07"/>
+        <circle cx="1330" cy="640" r="9" opacity=".09"/>
+        <circle cx="1276" cy="556" r="5" opacity=".07"/>
+        <circle cx="1348" cy="486" r="6" opacity=".06"/>
+        <circle cx="700" cy="120" r="5" opacity=".07"/>
+        <circle cx="820" cy="72" r="8" opacity=".05"/>
+      </g>
+
+      <!-- Layered waves -->
+      <g fill="#1c86bd">
+        <path opacity=".055" d="M0,596 C180,552 340,640 540,612 C740,584 900,516 1120,548 C1268,570 1360,606 1440,596 L1440,900 L0,900 Z"/>
+        <path opacity=".07" d="M0,672 C200,636 360,712 580,690 C800,668 960,606 1180,634 C1300,650 1382,682 1440,674 L1440,900 L0,900 Z"/>
+        <path opacity=".09" d="M0,752 C220,714 400,788 620,768 C840,748 1000,694 1220,718 C1330,730 1394,756 1440,750 L1440,900 L0,900 Z"/>
+        <path opacity=".12" d="M0,830 C240,798 420,860 660,844 C900,828 1060,786 1280,806 C1370,814 1416,832 1440,828 L1440,900 L0,900 Z"/>
+      </g>
+
+      <!-- Highlights on the crests -->
+      <g fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round">
+        <path opacity=".5" d="M0,672 C200,636 360,712 580,690 C800,668 960,606 1180,634 C1300,650 1382,682 1440,674"/>
+        <path opacity=".38" d="M0,752 C220,714 400,788 620,768 C840,748 1000,694 1220,718 C1330,730 1394,756 1440,750"/>
+      </g>
+    </svg>
+  </div>
 
   <h1 class="headline">Perth Residents: How Drinkable Is Your Water?</h1>
   <p class="subline">Complete this 20 sec survey to check now:</p>
