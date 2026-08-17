@@ -141,6 +141,13 @@
     outline: none;
   }
 
+  .hint {
+    font-weight: 500;
+    font-size: 13px;
+    color: #6b7075;
+    margin: -6px 0 14px 4px;
+  }
+
   .submit[disabled] {
     background: #6b6b6b;
     cursor: default;
@@ -259,6 +266,8 @@
       <input class="field" type="text" id="name" placeholder="Name" autocomplete="name">
       <input class="field" type="email" id="email" placeholder="Email" autocomplete="email">
       <input class="field" type="tel" id="phone" placeholder="Phone" autocomplete="tel">
+      <input class="field" type="text" id="address" placeholder="Street Address &amp; Suburb" autocomplete="street-address">
+      <p class="hint">ie. Langford St, Bayswater</p>
       <button class="submit" id="submitBtn" onclick="submitForm()">Submit</button>
       <p class="error" id="error"></p>
     </div>
@@ -309,10 +318,11 @@
     var name = document.getElementById('name').value.trim();
     var email = document.getElementById('email').value.trim();
     var phone = document.getElementById('phone').value.trim();
+    var address = document.getElementById('address').value.trim();
 
     error.textContent = '';
 
-    if (!name || !email || !phone) {
+    if (!name || !email || !phone || !address) {
       error.textContent = 'Please fill in all fields.';
       return;
     }
@@ -326,6 +336,7 @@
     params.set('name', name);
     params.set('email', email);
     params.set('phone', phone);
+    params.set('address', address);
     params.set('q1_question', questionText(1));
     params.set('q1_answer', answers[1]);
     params.set('q2_question', questionText(2));
