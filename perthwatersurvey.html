@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Perth Residents: How Drinkable Is Your Water?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Montserrat', Arial, sans-serif;
+    background: #eceef0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 20px;
+  }
+
+  .headline {
+    color: #000;
+    font-weight: 800;
+    font-size: clamp(28px, 5vw, 46px);
+    line-height: 1.15;
+    text-align: center;
+    max-width: 760px;
+  }
+
+  .subline {
+    color: #000;
+    font-weight: 600;
+    font-size: clamp(16px, 2.5vw, 22px);
+    text-align: center;
+    margin-top: 14px;
+  }
+
+  .card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.08);
+    width: 100%;
+    max-width: 520px;
+    margin-top: 36px;
+    padding: 32px 28px;
+  }
+
+  .question {
+    font-weight: 600;
+    font-size: 19px;
+    color: #000;
+    margin-bottom: 20px;
+    line-height: 1.35;
+  }
+
+  .option {
+    display: block;
+    width: 100%;
+    background: #fff;
+    border: 2px solid #d7dade;
+    border-radius: 8px;
+    padding: 15px 18px;
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    color: #000;
+    text-align: left;
+    cursor: pointer;
+    margin-bottom: 12px;
+    transition: border-color .15s, background .15s;
+  }
+
+  .option:hover, .option:focus-visible {
+    border-color: #000;
+    background: #f7f8f9;
+    outline: none;
+  }
+
+  .step { display: none; }
+  .step.active { display: block; }
+
+  .field {
+    display: block;
+    width: 100%;
+    border: 2px solid #d7dade;
+    border-radius: 8px;
+    padding: 15px 18px;
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    color: #000;
+    margin-bottom: 12px;
+  }
+
+  .field:focus {
+    border-color: #000;
+    outline: none;
+  }
+
+  .submit {
+    display: block;
+    width: 100%;
+    background: #000;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 16px 18px;
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 6px;
+  }
+
+  .submit:hover, .submit:focus-visible {
+    background: #222;
+    outline: none;
+  }
+
+  .final {
+    font-weight: 600;
+    font-size: 19px;
+    color: #000;
+    text-align: center;
+    line-height: 1.5;
+  }
+
+  .progress {
+    height: 4px;
+    background: #e4e6e9;
+    border-radius: 2px;
+    margin-bottom: 26px;
+    overflow: hidden;
+  }
+
+  .progress-bar {
+    height: 100%;
+    width: 0%;
+    background: #000;
+    transition: width .25s ease;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .option, .progress-bar { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+  <h1 class="headline">Perth Residents: How Drinkable Is Your Water?</h1>
+  <p class="subline">Complete this 20 sec survey to check now:</p>
+
+  <div class="card">
+    <div class="progress"><div class="progress-bar" id="bar"></div></div>
+
+    <div class="step active" data-step="1">
+      <p class="question">1. What concerns you most about your tap water?</p>
+      <button class="option" onclick="next()">Taste or smell</button>
+      <button class="option" onclick="next()">Chemicals, contaminants or bacteria</button>
+      <button class="option" onclick="next()">Hard water, minerals or sediment</button>
+    </div>
+
+    <div class="step" data-step="2">
+      <p class="question">2. What water do you mainly drink at home?</p>
+      <button class="option" onclick="next()">Straight from the tap</button>
+      <button class="option" onclick="next()">Filtered water</button>
+      <button class="option" onclick="next()">Bottled water</button>
+    </div>
+
+    <div class="step" data-step="3">
+      <p class="question">3. Are you interested in different water filter solutions to restore your water quality?</p>
+      <button class="option" onclick="next()">Yes</button>
+      <button class="option" onclick="next()">No</button>
+    </div>
+
+    <div class="step" data-step="4">
+      <p class="question">Last step! Enter your details:</p>
+      <input class="field" type="text" id="name" placeholder="Name" autocomplete="name">
+      <input class="field" type="email" id="email" placeholder="Email" autocomplete="email">
+      <input class="field" type="tel" id="phone" placeholder="Phone" autocomplete="tel">
+      <button class="submit" onclick="submitForm()">Submit</button>
+    </div>
+
+    <div class="step" data-step="5">
+      <p class="final">Great! We&rsquo;ll reach out shortly to organise a time to check your water quality ASAP.</p>
+    </div>
+  </div>
+
+<script>
+  var current = 1;
+  var total = 5;
+  var bar = document.getElementById('bar');
+
+  function next() {
+    var from = document.querySelector('.step[data-step="' + current + '"]');
+    current++;
+    var to = document.querySelector('.step[data-step="' + current + '"]');
+    if (from && to) {
+      from.classList.remove('active');
+      to.classList.add('active');
+    }
+    bar.style.width = ((current - 1) / (total - 1) * 100) + '%';
+  }
+
+  function submitForm() {
+    var name = document.getElementById('name').value.trim();
+    var email = document.getElementById('email').value.trim();
+    var phone = document.getElementById('phone').value.trim();
+    if (!name || !email || !phone) {
+      alert('Please fill in all fields.');
+      return;
+    }
+    // Send lead here (webhook/CRM endpoint):
+    // fetch('YOUR_WEBHOOK_URL', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ name: name, email: email, phone: phone }) });
+    next();
+  }
+</script>
+
+</body>
+</html>
