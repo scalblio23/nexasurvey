@@ -4,11 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Perth Residents: How Drinkable Is Your Water?</title>
+<meta name="description" content="Free 20-second water quality check for Perth residents. Answer 3 quick questions and a local technician will test your tap water.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --blue: #0b82b8;
+    --blue-dark: #0a6b98;
+    --ink: #0d1418;
+    --muted: #5d666d;
+  }
 
   body {
     font-family: 'Montserrat', Arial, sans-serif;
@@ -21,8 +29,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    padding: 32px 20px;
+    justify-content: flex-start;
+    padding: 20px 16px 48px;
+    color: var(--ink);
   }
 
   /* Water motif behind the content: ripples and waves at very low opacity. */
@@ -36,156 +45,303 @@
     opacity: .55;
   }
 
-  .bg svg {
-    width: 100%;
-    height: 100%;
-    display: block;
+  .bg svg { width: 100%; height: 100%; display: block; }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #fff;
+    border: 1px solid #cfe3ee;
+    border-radius: 999px;
+    padding: 7px 15px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--blue-dark);
+    box-shadow: 0 2px 8px rgba(11,130,184,.10);
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #17b26a;
+    box-shadow: 0 0 0 0 rgba(23,178,106,.6);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%   { box-shadow: 0 0 0 0 rgba(23,178,106,.55); }
+    70%  { box-shadow: 0 0 0 9px rgba(23,178,106,0); }
+    100% { box-shadow: 0 0 0 0 rgba(23,178,106,0); }
   }
 
   .headline {
-    color: #000;
     font-weight: 800;
-    font-size: clamp(28px, 5vw, 46px);
-    line-height: 1.15;
+    font-size: clamp(26px, 5vw, 44px);
+    line-height: 1.14;
     text-align: center;
     max-width: 760px;
+    margin-top: 16px;
+  }
+
+  .headline em {
+    font-style: normal;
+    color: var(--blue-dark);
   }
 
   .subline {
-    color: #000;
     font-weight: 600;
-    font-size: clamp(16px, 2.5vw, 22px);
+    font-size: clamp(15px, 2.5vw, 20px);
     text-align: center;
-    margin-top: 14px;
+    margin-top: 10px;
+    color: var(--muted);
+    max-width: 560px;
   }
 
   .card {
     background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 6px 24px rgba(0,0,0,0.08);
+    border-radius: 16px;
+    box-shadow: 0 10px 34px rgba(13,60,84,.13), 0 2px 6px rgba(13,60,84,.06);
     width: 100%;
-    max-width: 520px;
-    margin-top: 36px;
-    padding: 32px 28px;
+    max-width: 540px;
+    margin-top: 22px;
+    padding: 24px 22px 26px;
+    animation: rise .45s ease both;
   }
 
-  .question {
-    font-weight: 600;
-    font-size: 19px;
-    color: #000;
-    margin-bottom: 20px;
-    line-height: 1.35;
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: none; }
   }
 
-  .option {
-    display: block;
-    width: 100%;
-    background: #fff;
-    border: 2px solid #d7dade;
-    border-radius: 8px;
-    padding: 15px 18px;
-    font-family: 'Montserrat', Arial, sans-serif;
-    font-weight: 500;
-    font-size: 16px;
-    color: #000;
-    text-align: left;
-    cursor: pointer;
-    margin-bottom: 12px;
-    transition: border-color .15s, background .15s;
+  .meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    color: var(--blue-dark);
+    margin-bottom: 10px;
   }
 
-  .option:hover, .option:focus-visible {
-    border-color: #000;
-    background: #f7f8f9;
-    outline: none;
-  }
-
-  .step { display: none; }
-  .step.active { display: block; }
-
-  .field {
-    display: block;
-    width: 100%;
-    border: 2px solid #d7dade;
-    border-radius: 8px;
-    padding: 15px 18px;
-    font-family: 'Montserrat', Arial, sans-serif;
-    font-weight: 500;
-    font-size: 16px;
-    color: #000;
-    margin-bottom: 12px;
-  }
-
-  .field:focus {
-    border-color: #000;
-    outline: none;
-  }
-
-  .submit {
-    display: block;
-    width: 100%;
-    background: #000;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    padding: 16px 18px;
-    font-family: 'Montserrat', Arial, sans-serif;
-    font-weight: 600;
-    font-size: 16px;
-    cursor: pointer;
-    margin-top: 6px;
-  }
-
-  .submit:hover, .submit:focus-visible {
-    background: #222;
-    outline: none;
-  }
-
-  .hint {
-    font-weight: 500;
-    font-size: 13px;
-    color: #6b7075;
-    margin: -6px 0 14px 4px;
-  }
-
-  .submit[disabled] {
-    background: #6b6b6b;
-    cursor: default;
-  }
-
-  .error {
-    color: #b3261e;
-    font-weight: 500;
-    font-size: 14px;
-    margin-top: 10px;
-    min-height: 18px;
-  }
-
-  .final {
-    font-weight: 600;
-    font-size: 19px;
-    color: #000;
-    text-align: center;
-    line-height: 1.5;
-  }
+  .meta .left { color: var(--muted); }
 
   .progress {
-    height: 4px;
-    background: #e4e6e9;
-    border-radius: 2px;
-    margin-bottom: 26px;
+    height: 6px;
+    background: #e6eaed;
+    border-radius: 999px;
+    margin-bottom: 22px;
     overflow: hidden;
   }
 
   .progress-bar {
     height: 100%;
     width: 0%;
-    background: #000;
-    transition: width .25s ease;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #17a2d6, #0b82b8);
+    transition: width .3s ease;
+  }
+
+  .question {
+    font-weight: 700;
+    font-size: 20px;
+    margin-bottom: 18px;
+    line-height: 1.32;
+  }
+
+  .option {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    background: #fff;
+    border: 2px solid #dbe1e6;
+    border-radius: 11px;
+    padding: 17px 16px 17px 18px;
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--ink);
+    text-align: left;
+    cursor: pointer;
+    margin-bottom: 11px;
+    transition: border-color .15s, background .15s, transform .12s, box-shadow .15s;
+  }
+
+  .option::after {
+    content: "";
+    width: 9px;
+    height: 9px;
+    flex: none;
+    border-right: 2.5px solid #b9c3ca;
+    border-bottom: 2.5px solid #b9c3ca;
+    transform: rotate(-45deg);
+    transition: border-color .15s;
+  }
+
+  .option:hover, .option:focus-visible {
+    border-color: var(--blue);
+    background: #f4fbfe;
+    box-shadow: 0 4px 14px rgba(11,130,184,.16);
+    transform: translateY(-1px);
+    outline: none;
+  }
+
+  .option:hover::after, .option:focus-visible::after { border-color: var(--blue); }
+  .option:active { transform: translateY(0); }
+
+  .step { display: none; }
+  .step.active { display: block; }
+
+  .step.active .option {
+    animation: slide .32s ease both;
+  }
+
+  .step.active .option:nth-of-type(1) { animation-delay: .04s; }
+  .step.active .option:nth-of-type(2) { animation-delay: .10s; }
+  .step.active .option:nth-of-type(3) { animation-delay: .16s; }
+
+  @keyframes slide {
+    from { opacity: 0; transform: translateX(-8px); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  .field {
+    display: block;
+    width: 100%;
+    border: 2px solid #dbe1e6;
+    border-radius: 11px;
+    padding: 16px 18px;
+    font-family: inherit;
+    font-weight: 500;
+    font-size: 16px;
+    color: var(--ink);
+    margin-bottom: 11px;
+    transition: border-color .15s, box-shadow .15s;
+  }
+
+  .field::placeholder { color: #939ba1; }
+
+  .field:focus {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 4px rgba(11,130,184,.13);
+    outline: none;
+  }
+
+  .hint {
+    font-weight: 500;
+    font-size: 13px;
+    color: var(--muted);
+    margin: -5px 0 14px 4px;
+  }
+
+  .submit {
+    display: block;
+    width: 100%;
+    background: linear-gradient(180deg, #12a0d4, #0b82b8);
+    color: #fff;
+    border: none;
+    border-radius: 11px;
+    padding: 18px 18px;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 17px;
+    cursor: pointer;
+    margin-top: 8px;
+    box-shadow: 0 6px 18px rgba(11,130,184,.32);
+    transition: filter .15s, transform .12s;
+  }
+
+  .submit:hover, .submit:focus-visible { filter: brightness(1.07); outline: none; }
+  .submit:active { transform: translateY(1px); }
+
+  .submit[disabled] {
+    background: #9aa6ad;
+    box-shadow: none;
+    cursor: default;
+  }
+
+  .privacy {
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--muted);
+    text-align: center;
+    margin-top: 12px;
+    line-height: 1.45;
+  }
+
+  .error {
+    color: #b3261e;
+    font-weight: 600;
+    font-size: 14px;
+    margin-top: 10px;
+    min-height: 18px;
+    text-align: center;
+  }
+
+  .final { text-align: center; padding: 8px 0 4px; }
+
+  .tick {
+    width: 58px;
+    height: 58px;
+    margin: 0 auto 16px;
+    border-radius: 50%;
+    background: #e8f8f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .tick svg { width: 30px; height: 30px; }
+
+  .final h2 {
+    font-size: 22px;
+    font-weight: 800;
+    margin-bottom: 10px;
+  }
+
+  .final p {
+    font-weight: 500;
+    font-size: 16px;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+
+  .trust {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px 20px;
+    margin-top: 18px;
+    max-width: 540px;
+  }
+
+  .trust span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #4d5860;
+  }
+
+  .trust svg { width: 15px; height: 15px; flex: none; }
+
+  @media (max-width: 420px) {
+    .card { padding: 20px 16px 22px; }
+    .question { font-size: 18px; }
+    .option { padding: 15px 14px 15px 16px; font-size: 15.5px; }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .option, .progress-bar { transition: none; }
+    .option, .progress-bar, .submit, .card, .dot { transition: none; animation: none; }
   }
 </style>
 </head>
@@ -235,46 +391,65 @@
     </svg>
   </div>
 
-  <h1 class="headline">Perth Residents: How Drinkable Is Your Water?</h1>
-  <p class="subline">Complete this 20 sec survey to check now:</p>
+  <div class="eyebrow"><span class="dot"></span>Free check &middot; Perth only &middot; 20 seconds</div>
+
+  <h1 class="headline">Perth Residents: <em>How Drinkable</em> Is Your Water?</h1>
+  <p class="subline">Answer 3 quick questions and we&rsquo;ll check your water quality &mdash; free, no obligation.</p>
 
   <div class="card">
+    <div class="meta">
+      <span class="left" id="stepLabel">Question 1 of 3</span>
+      <span id="stepTime">Takes 20 seconds</span>
+    </div>
     <div class="progress"><div class="progress-bar" id="bar"></div></div>
 
     <div class="step active" data-step="1">
-      <p class="question">1. What concerns you most about your tap water?</p>
+      <p class="question">What concerns you most about your tap water?</p>
       <button class="option" onclick="next(this)">Taste or smell</button>
       <button class="option" onclick="next(this)">Chemicals, contaminants or bacteria</button>
       <button class="option" onclick="next(this)">Hard water, minerals or sediment</button>
     </div>
 
     <div class="step" data-step="2">
-      <p class="question">2. What water do you mainly drink at home?</p>
+      <p class="question">What water do you mainly drink at home?</p>
       <button class="option" onclick="next(this)">Straight from the tap</button>
       <button class="option" onclick="next(this)">Filtered water</button>
       <button class="option" onclick="next(this)">Bottled water</button>
     </div>
 
     <div class="step" data-step="3">
-      <p class="question">3. Are you interested in different water filter solutions to restore your water quality?</p>
+      <p class="question">Are you interested in different water filter solutions to restore your water quality?</p>
       <button class="option" onclick="next(this)">Yes</button>
       <button class="option" onclick="next(this)">No</button>
     </div>
 
     <div class="step" data-step="4">
-      <p class="question">Last step! Enter your details:</p>
+      <p class="question">Last step &mdash; where should we send your results?</p>
       <input class="field" type="text" id="name" placeholder="Name" autocomplete="name">
       <input class="field" type="email" id="email" placeholder="Email" autocomplete="email">
       <input class="field" type="tel" id="phone" placeholder="Phone" autocomplete="tel">
       <input class="field" type="text" id="address" placeholder="Street Address &amp; Suburb" autocomplete="street-address">
       <p class="hint">ie. Langford St, Bayswater</p>
-      <button class="submit" id="submitBtn" onclick="submitForm()">Submit</button>
+      <button class="submit" id="submitBtn" onclick="submitForm()">Get My Free Water Check</button>
       <p class="error" id="error"></p>
+      <p class="privacy">We only use your details to arrange your water check. No spam, and we never sell your information.</p>
     </div>
 
     <div class="step" data-step="5">
-      <p class="final">Great! We&rsquo;ll reach out shortly to organise a time to check your water quality ASAP.</p>
+      <div class="final">
+        <div class="tick">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#17b26a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+        </div>
+        <h2>You&rsquo;re all booked in!</h2>
+        <p>We&rsquo;ll reach out shortly to organise a time to check your water quality ASAP. Keep an eye on your phone &mdash; we call from a local Perth number.</p>
+      </div>
     </div>
+  </div>
+
+  <div class="trust">
+    <span><svg viewBox="0 0 24 24" fill="none" stroke="#0b82b8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>No obligation</span>
+    <span><svg viewBox="0 0 24 24" fill="none" stroke="#0b82b8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.2-7-10a7 7 0 1 1 14 0c0 4.8-7 10-7 10z"/><circle cx="12" cy="11" r="2.5"/></svg>Local Perth technicians</span>
+    <span><svg viewBox="0 0 24 24" fill="none" stroke="#0b82b8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>Your details stay private</span>
   </div>
 
 <script>
@@ -283,15 +458,26 @@
   var current = 1;
   var total = 5;
   var bar = document.getElementById('bar');
+  var stepLabel = document.getElementById('stepLabel');
+  var stepTime = document.getElementById('stepTime');
   var startedAt = new Date();
 
   // Answers keyed by step number, so the payload field names stay stable
   // even if the wording of a question changes.
-  var answers = {
-    1: '',
-    2: '',
-    3: ''
-  };
+  var answers = { 1: '', 2: '', 3: '' };
+
+  function paintMeta() {
+    if (current <= 3) {
+      stepLabel.textContent = 'Question ' + current + ' of 3';
+      stepTime.textContent = current === 1 ? 'Takes 20 seconds' : 'Almost there';
+    } else if (current === 4) {
+      stepLabel.textContent = 'Final step';
+      stepTime.textContent = 'Your details';
+    } else {
+      stepLabel.textContent = 'Complete';
+      stepTime.textContent = 'Thank you';
+    }
+  }
 
   function next(button) {
     if (button && answers.hasOwnProperty(current)) {
@@ -305,6 +491,7 @@
       to.classList.add('active');
     }
     bar.style.width = ((current - 1) / (total - 1) * 100) + '%';
+    paintMeta();
   }
 
   function questionText(step) {
@@ -378,6 +565,8 @@
       next();
     });
   }
+
+  paintMeta();
 </script>
 
 </body>
