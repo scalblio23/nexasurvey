@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Perth Residents: How Drinkable Is Your Water?</title>
 <meta name="description" content="Free 20-second water quality check for Perth residents. Answer 3 quick questions and a local technician will test your tap water.">
+<meta name="theme-color" content="#05405d">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet">
@@ -20,17 +21,10 @@
 
   body {
     font-family: 'Montserrat', Arial, sans-serif;
-    background: #eceef0;
-    background-image:
-      radial-gradient(ellipse 90% 60% at 50% 0%, #dceef7 0%, rgba(220,238,247,0) 70%),
-      linear-gradient(180deg, #eef1f3 0%, #e7ecef 100%);
+    background: linear-gradient(180deg, #eaf4f9 0%, #dde9f0 100%);
     background-attachment: fixed;
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    padding: 20px 16px 48px;
+    padding-bottom: 44px;
     color: var(--ink);
   }
 
@@ -47,67 +41,98 @@
 
   .bg svg { width: 100%; height: 100%; display: block; }
 
+  /* ---------- Hero ---------- */
+
+  .hero {
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    color: #fff;
+    padding: 26px 18px 74px;
+    background: linear-gradient(160deg, #05405d 0%, #076a94 55%, #0a7ba6 100%);
+    border-bottom-left-radius: 50% 38px;
+    border-bottom-right-radius: 50% 38px;
+    box-shadow: 0 10px 30px rgba(5, 64, 93, .28);
+  }
+
+  .hero-art {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  .hero-inner { position: relative; }
+
   .eyebrow {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background: #fff;
-    border: 1px solid #cfe3ee;
+    background: rgba(255,255,255,.14);
+    border: 1px solid rgba(255,255,255,.32);
     border-radius: 999px;
     padding: 7px 15px;
     font-size: 12px;
     font-weight: 700;
     letter-spacing: .06em;
     text-transform: uppercase;
-    color: var(--blue-dark);
-    box-shadow: 0 2px 8px rgba(11,130,184,.10);
+    color: #fff;
+    backdrop-filter: blur(2px);
   }
 
   .dot {
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: #17b26a;
-    box-shadow: 0 0 0 0 rgba(23,178,106,.6);
+    background: #3ddc97;
     animation: pulse 2s infinite;
   }
 
   @keyframes pulse {
-    0%   { box-shadow: 0 0 0 0 rgba(23,178,106,.55); }
-    70%  { box-shadow: 0 0 0 9px rgba(23,178,106,0); }
-    100% { box-shadow: 0 0 0 0 rgba(23,178,106,0); }
+    0%   { box-shadow: 0 0 0 0 rgba(61,220,151,.7); }
+    70%  { box-shadow: 0 0 0 9px rgba(61,220,151,0); }
+    100% { box-shadow: 0 0 0 0 rgba(61,220,151,0); }
   }
 
   .headline {
     font-weight: 800;
     font-size: clamp(26px, 5vw, 44px);
     line-height: 1.14;
-    text-align: center;
     max-width: 760px;
-    margin-top: 16px;
+    margin: 16px auto 0;
   }
 
   .headline em {
     font-style: normal;
-    color: var(--blue-dark);
+    color: #6fe3ff;
   }
 
   .subline {
     font-weight: 600;
-    font-size: clamp(15px, 2.5vw, 20px);
-    text-align: center;
-    margin-top: 10px;
-    color: var(--muted);
-    max-width: 560px;
+    font-size: clamp(15px, 2.4vw, 19px);
+    margin: 10px auto 0;
+    max-width: 520px;
+    color: rgba(255,255,255,.93);
+  }
+
+  /* ---------- Card ---------- */
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 16px;
   }
 
   .card {
+    position: relative;
     background: #fff;
-    border-radius: 16px;
-    box-shadow: 0 10px 34px rgba(13,60,84,.13), 0 2px 6px rgba(13,60,84,.06);
+    border-radius: 18px;
+    box-shadow: 0 14px 40px rgba(5,64,93,.16), 0 2px 6px rgba(5,64,93,.07);
     width: 100%;
     max-width: 540px;
-    margin-top: 22px;
+    margin-top: -46px;
     padding: 24px 22px 26px;
     animation: rise .45s ease both;
   }
@@ -132,8 +157,8 @@
   .meta .left { color: var(--muted); }
 
   .progress {
-    height: 6px;
-    background: #e6eaed;
+    height: 7px;
+    background: #e6eef3;
     border-radius: 999px;
     margin-bottom: 22px;
     overflow: hidden;
@@ -143,7 +168,7 @@
     height: 100%;
     width: 0%;
     border-radius: 999px;
-    background: linear-gradient(90deg, #17a2d6, #0b82b8);
+    background: linear-gradient(90deg, #22d3ee, #0b82b8 65%, #3ddc97);
     transition: width .3s ease;
   }
 
@@ -154,17 +179,17 @@
     line-height: 1.32;
   }
 
+  /* ---------- Options ---------- */
+
   .option {
-    position: relative;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 12px;
+    gap: 14px;
     width: 100%;
     background: #fff;
-    border: 2px solid #dbe1e6;
-    border-radius: 11px;
-    padding: 17px 16px 17px 18px;
+    border: 2px solid #dfe6ea;
+    border-radius: 12px;
+    padding: 13px 15px;
     font-family: inherit;
     font-weight: 600;
     font-size: 16px;
@@ -175,35 +200,54 @@
     transition: border-color .15s, background .15s, transform .12s, box-shadow .15s;
   }
 
+  .txt { flex: 1; }
+
+  .ic {
+    flex: none;
+    width: 42px;
+    height: 42px;
+    border-radius: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform .15s;
+  }
+
+  .ic svg { width: 22px; height: 22px; }
+
+  .ic-cyan   { background: #dff5fb; color: #0891b2; }
+  .ic-blue   { background: #e3edfd; color: #2563eb; }
+  .ic-violet { background: #ebe9fe; color: #7048e8; }
+  .ic-green  { background: #e2f7ec; color: #12a06a; }
+  .ic-slate  { background: #eceff2; color: #64748b; }
+
   .option::after {
     content: "";
     width: 9px;
     height: 9px;
     flex: none;
-    border-right: 2.5px solid #b9c3ca;
-    border-bottom: 2.5px solid #b9c3ca;
+    border-right: 2.5px solid #c2ccd3;
+    border-bottom: 2.5px solid #c2ccd3;
     transform: rotate(-45deg);
     transition: border-color .15s;
   }
 
   .option:hover, .option:focus-visible {
     border-color: var(--blue);
-    background: #f4fbfe;
-    box-shadow: 0 4px 14px rgba(11,130,184,.16);
+    background: #f5fbfe;
+    box-shadow: 0 6px 18px rgba(11,130,184,.18);
     transform: translateY(-1px);
     outline: none;
   }
 
   .option:hover::after, .option:focus-visible::after { border-color: var(--blue); }
+  .option:hover .ic { transform: scale(1.06); }
   .option:active { transform: translateY(0); }
 
   .step { display: none; }
   .step.active { display: block; }
 
-  .step.active .option {
-    animation: slide .32s ease both;
-  }
-
+  .step.active .option { animation: slide .32s ease both; }
   .step.active .option:nth-of-type(1) { animation-delay: .04s; }
   .step.active .option:nth-of-type(2) { animation-delay: .10s; }
   .step.active .option:nth-of-type(3) { animation-delay: .16s; }
@@ -213,25 +257,29 @@
     to   { opacity: 1; transform: none; }
   }
 
+  /* ---------- Form ---------- */
+
   .field {
     display: block;
     width: 100%;
-    border: 2px solid #dbe1e6;
-    border-radius: 11px;
+    background: #f8fbfd;
+    border: 2px solid #dfe6ea;
+    border-radius: 12px;
     padding: 16px 18px;
     font-family: inherit;
     font-weight: 500;
     font-size: 16px;
     color: var(--ink);
     margin-bottom: 11px;
-    transition: border-color .15s, box-shadow .15s;
+    transition: border-color .15s, box-shadow .15s, background .15s;
   }
 
   .field::placeholder { color: #939ba1; }
 
   .field:focus {
+    background: #fff;
     border-color: var(--blue);
-    box-shadow: 0 0 0 4px rgba(11,130,184,.13);
+    box-shadow: 0 0 0 4px rgba(11,130,184,.14);
     outline: none;
   }
 
@@ -245,21 +293,21 @@
   .submit {
     display: block;
     width: 100%;
-    background: linear-gradient(180deg, #12a0d4, #0b82b8);
+    background: linear-gradient(180deg, #f4780e 0%, #d3520a 100%);
     color: #fff;
     border: none;
-    border-radius: 11px;
-    padding: 18px 18px;
+    border-radius: 12px;
+    padding: 18px;
     font-family: inherit;
-    font-weight: 700;
-    font-size: 17px;
+    font-weight: 800;
+    font-size: 18px;
     cursor: pointer;
     margin-top: 8px;
-    box-shadow: 0 6px 18px rgba(11,130,184,.32);
+    box-shadow: 0 8px 20px rgba(211,82,10,.34);
     transition: filter .15s, transform .12s;
   }
 
-  .submit:hover, .submit:focus-visible { filter: brightness(1.07); outline: none; }
+  .submit:hover, .submit:focus-visible { filter: brightness(1.06); outline: none; }
   .submit:active { transform: translateY(1px); }
 
   .submit[disabled] {
@@ -286,26 +334,25 @@
     text-align: center;
   }
 
+  /* ---------- Confirmation ---------- */
+
   .final { text-align: center; padding: 8px 0 4px; }
 
   .tick {
-    width: 58px;
-    height: 58px;
+    width: 62px;
+    height: 62px;
     margin: 0 auto 16px;
     border-radius: 50%;
-    background: #e8f8f0;
+    background: linear-gradient(160deg, #3ddc97, #12a06a);
     display: flex;
     align-items: center;
     justify-content: center;
+    box-shadow: 0 8px 20px rgba(18,160,106,.32);
   }
 
   .tick svg { width: 30px; height: 30px; }
 
-  .final h2 {
-    font-size: 22px;
-    font-weight: 800;
-    margin-bottom: 10px;
-  }
+  .final h2 { font-size: 22px; font-weight: 800; margin-bottom: 10px; }
 
   .final p {
     font-weight: 500;
@@ -314,34 +361,45 @@
     line-height: 1.55;
   }
 
+  /* ---------- Trust row ---------- */
+
   .trust {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 8px 20px;
+    gap: 10px;
     margin-top: 18px;
-    max-width: 540px;
+    max-width: 640px;
   }
 
   .trust span {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 7px;
+    background: #fff;
+    border: 1px solid #dbe6ed;
+    border-radius: 999px;
+    padding: 8px 14px;
     font-size: 13px;
     font-weight: 600;
-    color: #4d5860;
+    color: #3c4750;
+    box-shadow: 0 2px 8px rgba(5,64,93,.06);
   }
 
   .trust svg { width: 15px; height: 15px; flex: none; }
 
   @media (max-width: 420px) {
+    .hero { padding: 22px 16px 70px; }
     .card { padding: 20px 16px 22px; }
     .question { font-size: 18px; }
-    .option { padding: 15px 14px 15px 16px; font-size: 15.5px; }
+    .option { padding: 11px 13px; font-size: 15.5px; gap: 12px; }
+    .ic { width: 38px; height: 38px; border-radius: 10px; }
+    .ic svg { width: 20px; height: 20px; }
+    .trust span { padding: 7px 12px; font-size: 12.5px; }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .option, .progress-bar, .submit, .card, .dot { transition: none; animation: none; }
+    .option, .progress-bar, .submit, .card, .dot, .ic { transition: none; animation: none; }
   }
 </style>
 </head>
@@ -350,20 +408,16 @@
   <div class="bg" aria-hidden="true">
     <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
       <g fill="none" stroke="#1c86bd" stroke-width="2">
-        <!-- Droplet ripples, upper left -->
         <circle cx="250" cy="180" r="40" opacity=".18"/>
         <circle cx="250" cy="180" r="78" opacity=".13"/>
         <circle cx="250" cy="180" r="124" opacity=".09"/>
         <circle cx="250" cy="180" r="178" opacity=".06"/>
         <circle cx="250" cy="180" r="240" opacity=".04"/>
-        <!-- Droplet ripples, upper right -->
         <circle cx="1210" cy="300" r="30" opacity=".15"/>
         <circle cx="1210" cy="300" r="64" opacity=".11"/>
         <circle cx="1210" cy="300" r="106" opacity=".075"/>
         <circle cx="1210" cy="300" r="156" opacity=".05"/>
       </g>
-
-      <!-- Rising bubbles -->
       <g fill="#1c86bd">
         <circle cx="140" cy="620" r="7" opacity=".10"/>
         <circle cx="196" cy="540" r="4" opacity=".08"/>
@@ -371,19 +425,13 @@
         <circle cx="1330" cy="640" r="9" opacity=".09"/>
         <circle cx="1276" cy="556" r="5" opacity=".07"/>
         <circle cx="1348" cy="486" r="6" opacity=".06"/>
-        <circle cx="700" cy="120" r="5" opacity=".07"/>
-        <circle cx="820" cy="72" r="8" opacity=".05"/>
       </g>
-
-      <!-- Layered waves -->
       <g fill="#1c86bd">
         <path opacity=".055" d="M0,596 C180,552 340,640 540,612 C740,584 900,516 1120,548 C1268,570 1360,606 1440,596 L1440,900 L0,900 Z"/>
         <path opacity=".07" d="M0,672 C200,636 360,712 580,690 C800,668 960,606 1180,634 C1300,650 1382,682 1440,674 L1440,900 L0,900 Z"/>
         <path opacity=".09" d="M0,752 C220,714 400,788 620,768 C840,748 1000,694 1220,718 C1330,730 1394,756 1440,750 L1440,900 L0,900 Z"/>
         <path opacity=".12" d="M0,830 C240,798 420,860 660,844 C900,828 1060,786 1280,806 C1370,814 1416,832 1440,828 L1440,900 L0,900 Z"/>
       </g>
-
-      <!-- Highlights on the crests -->
       <g fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round">
         <path opacity=".5" d="M0,672 C200,636 360,712 580,690 C800,668 960,606 1180,634 C1300,650 1382,682 1440,674"/>
         <path opacity=".38" d="M0,752 C220,714 400,788 620,768 C840,748 1000,694 1220,718 C1330,730 1394,756 1440,750"/>
@@ -391,66 +439,113 @@
     </svg>
   </div>
 
-  <div class="eyebrow"><span class="dot"></span>Free check &middot; Perth only &middot; 20 seconds</div>
+  <header class="hero">
+    <svg class="hero-art" viewBox="0 0 1440 420" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <g fill="none" stroke="#ffffff" stroke-width="2">
+        <circle cx="140" cy="80" r="46" opacity=".14"/>
+        <circle cx="140" cy="80" r="90" opacity=".10"/>
+        <circle cx="140" cy="80" r="142" opacity=".07"/>
+        <circle cx="140" cy="80" r="200" opacity=".045"/>
+        <circle cx="1300" cy="330" r="38" opacity=".13"/>
+        <circle cx="1300" cy="330" r="80" opacity=".09"/>
+        <circle cx="1300" cy="330" r="130" opacity=".06"/>
+      </g>
+      <g fill="#ffffff">
+        <circle cx="1120" cy="70" r="6" opacity=".16"/>
+        <circle cx="1180" cy="140" r="4" opacity=".13"/>
+        <circle cx="330" cy="330" r="5" opacity=".12"/>
+        <circle cx="420" cy="380" r="8" opacity=".08"/>
+      </g>
+    </svg>
 
-  <h1 class="headline">Perth Residents: <em>How Drinkable</em> Is Your Water?</h1>
-  <p class="subline">Answer 3 quick questions and we&rsquo;ll check your water quality &mdash; free, no obligation.</p>
-
-  <div class="card">
-    <div class="meta">
-      <span class="left" id="stepLabel">Question 1 of 3</span>
-      <span id="stepTime">Takes 20 seconds</span>
+    <div class="hero-inner">
+      <div class="eyebrow"><span class="dot"></span>Free check &middot; Perth only &middot; 20 seconds</div>
+      <h1 class="headline">Perth Residents: <em>How Drinkable</em> Is Your Water?</h1>
+      <p class="subline">Answer 3 quick questions and we&rsquo;ll check your water quality &mdash; free, no obligation.</p>
     </div>
-    <div class="progress"><div class="progress-bar" id="bar"></div></div>
+  </header>
 
-    <div class="step active" data-step="1">
-      <p class="question">What concerns you most about your tap water?</p>
-      <button class="option" onclick="next(this)">Taste or smell</button>
-      <button class="option" onclick="next(this)">Chemicals, contaminants or bacteria</button>
-      <button class="option" onclick="next(this)">Hard water, minerals or sediment</button>
-    </div>
+  <main class="content">
+    <div class="card">
+      <div class="meta">
+        <span class="left" id="stepLabel">Question 1 of 3</span>
+        <span id="stepTime">Takes 20 seconds</span>
+      </div>
+      <div class="progress"><div class="progress-bar" id="bar"></div></div>
 
-    <div class="step" data-step="2">
-      <p class="question">What water do you mainly drink at home?</p>
-      <button class="option" onclick="next(this)">Straight from the tap</button>
-      <button class="option" onclick="next(this)">Filtered water</button>
-      <button class="option" onclick="next(this)">Bottled water</button>
-    </div>
+      <div class="step active" data-step="1">
+        <p class="question">What concerns you most about your tap water?</p>
+        <button class="option" onclick="next(this)">
+          <span class="ic ic-cyan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l-1.2 16.2a2 2 0 0 1-2 1.8H9.2a2 2 0 0 1-2-1.8L6 3z"/><path d="M6.6 9h10.8"/></svg></span>
+          <span class="txt">Taste or smell</span>
+        </button>
+        <button class="option" onclick="next(this)">
+          <span class="ic ic-violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6"/><path d="M10 3v6l-4.8 8.4A2 2 0 0 0 6.9 20.5h10.2a2 2 0 0 0 1.7-3.1L14 9V3"/><path d="M7.5 15h9"/></svg></span>
+          <span class="txt">Chemicals, contaminants or bacteria</span>
+        </button>
+        <button class="option" onclick="next(this)">
+          <span class="ic ic-blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 3 8l9 5 9-5-9-5z"/><path d="M3 14l9 5 9-5"/></svg></span>
+          <span class="txt">Hard water, minerals or sediment</span>
+        </button>
+      </div>
 
-    <div class="step" data-step="3">
-      <p class="question">Are you interested in different water filter solutions to restore your water quality?</p>
-      <button class="option" onclick="next(this)">Yes</button>
-      <button class="option" onclick="next(this)">No</button>
-    </div>
+      <div class="step" data-step="2">
+        <p class="question">What water do you mainly drink at home?</p>
+        <button class="option" onclick="next(this)">
+          <span class="ic ic-blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h8a5 5 0 0 1 5 5v1"/><path d="M7 8V4h6"/><path d="M19.5 15.5 18 18a1.9 1.9 0 1 0 3 0l-1.5-2.5z"/></svg></span>
+          <span class="txt">Straight from the tap</span>
+        </button>
+        <button class="option" onclick="next(this)">
+          <span class="ic ic-cyan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h18l-7 8.2V20l-4 1.6V12.2L3 4z"/></svg></span>
+          <span class="txt">Filtered water</span>
+        </button>
+        <button class="option" onclick="next(this)">
+          <span class="ic ic-violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2h4v3l2 3.2V19a2.5 2.5 0 0 1-2.5 2.5h-3A2.5 2.5 0 0 1 8 19V8.2L10 5V2z"/><path d="M8 12.5h8"/></svg></span>
+          <span class="txt">Bottled water</span>
+        </button>
+      </div>
 
-    <div class="step" data-step="4">
-      <p class="question">Last step &mdash; where should we send your results?</p>
-      <input class="field" type="text" id="name" placeholder="Name" autocomplete="name">
-      <input class="field" type="email" id="email" placeholder="Email" autocomplete="email">
-      <input class="field" type="tel" id="phone" placeholder="Phone" autocomplete="tel">
-      <input class="field" type="text" id="address" placeholder="Street Address &amp; Suburb" autocomplete="street-address">
-      <p class="hint">ie. Langford St, Bayswater</p>
-      <button class="submit" id="submitBtn" onclick="submitForm()">Get My Free Water Check</button>
-      <p class="error" id="error"></p>
-      <p class="privacy">We only use your details to arrange your water check. No spam, and we never sell your information.</p>
-    </div>
+      <div class="step" data-step="3">
+        <p class="question">Are you interested in different water filter solutions to restore your water quality?</p>
+        <button class="option" onclick="next(this)">
+          <span class="ic ic-green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12.5 2.8 2.8L16 10"/></svg></span>
+          <span class="txt">Yes</span>
+        </button>
+        <button class="option" onclick="next(this)">
+          <span class="ic ic-slate"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m9 9 6 6M15 9l-6 6"/></svg></span>
+          <span class="txt">No</span>
+        </button>
+      </div>
 
-    <div class="step" data-step="5">
-      <div class="final">
-        <div class="tick">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#17b26a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+      <div class="step" data-step="4">
+        <p class="question">Last step &mdash; where should we send your results?</p>
+        <input class="field" type="text" id="name" placeholder="Name" autocomplete="name">
+        <input class="field" type="email" id="email" placeholder="Email" autocomplete="email">
+        <input class="field" type="tel" id="phone" placeholder="Phone" autocomplete="tel">
+        <input class="field" type="text" id="address" placeholder="Street Address &amp; Suburb" autocomplete="street-address">
+        <p class="hint">ie. Langford St, Bayswater</p>
+        <button class="submit" id="submitBtn" onclick="submitForm()">Get My Free Water Check</button>
+        <p class="error" id="error"></p>
+        <p class="privacy">We only use your details to arrange your water check. No spam, and we never sell your information.</p>
+      </div>
+
+      <div class="step" data-step="5">
+        <div class="final">
+          <div class="tick">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+          </div>
+          <h2>You&rsquo;re all booked in!</h2>
+          <p>We&rsquo;ll reach out shortly to organise a time to check your water quality ASAP. Keep an eye on your phone &mdash; we call from a local Perth number.</p>
         </div>
-        <h2>You&rsquo;re all booked in!</h2>
-        <p>We&rsquo;ll reach out shortly to organise a time to check your water quality ASAP. Keep an eye on your phone &mdash; we call from a local Perth number.</p>
       </div>
     </div>
-  </div>
 
-  <div class="trust">
-    <span><svg viewBox="0 0 24 24" fill="none" stroke="#0b82b8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>No obligation</span>
-    <span><svg viewBox="0 0 24 24" fill="none" stroke="#0b82b8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.2-7-10a7 7 0 1 1 14 0c0 4.8-7 10-7 10z"/><circle cx="12" cy="11" r="2.5"/></svg>Local Perth technicians</span>
-    <span><svg viewBox="0 0 24 24" fill="none" stroke="#0b82b8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>Your details stay private</span>
-  </div>
+    <div class="trust">
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="#0891b2" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>No obligation</span>
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.2-7-10a7 7 0 1 1 14 0c0 4.8-7 10-7 10z"/><circle cx="12" cy="11" r="2.5"/></svg>Local Perth technicians</span>
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="#12a06a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>Your details stay private</span>
+    </div>
+  </main>
 
 <script>
   var WEBHOOK_URL = 'https://hooks.zapier.com/hooks/catch/16453711/4thgzx1/';
@@ -481,7 +576,8 @@
 
   function next(button) {
     if (button && answers.hasOwnProperty(current)) {
-      answers[current] = button.textContent.trim();
+      var label = button.querySelector('.txt');
+      answers[current] = (label ? label.textContent : button.textContent).trim();
     }
     var from = document.querySelector('.step[data-step="' + current + '"]');
     current++;
