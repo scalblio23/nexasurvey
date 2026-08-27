@@ -37,6 +37,34 @@ const KNOWN_FIELDS = [
   'submitted_at_local',
 ]
 
+const HEADER_ROW = [...KNOWN_FIELDS, 'extra_params']
+
+// The sheet starts out blank, so the first lead ever appended would otherwise
+// land in row 1 with no column labels. Check row 1 of the first tab and,
+// if it's empty, write the header labels before appending the lead. Best
+// effort — a failure here never blocks lead capture itself.
+async function ensureHeaderRow(token, sheetId) {
+  try {
+    const checkUrl = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/1:1`
+    const checkRes = await fetch(checkUrl, { headers: { Authorization: `Bearer ${token}` } })
+    if (!checkRes.ok) return
+    const data = await checkRes.json()
+    if (data.values && data.values.length) return // row 1 already has something in it
+
+    const headerUrl = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/A1?valueInputOption=RAW`
+    await fetch(headerUrl, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ values: [HEADER_ROW] }),
+    })
+  } catch (err) {
+    console.error('submit-lead: header check/write failed', err)
+  }
+}
+
 // Normalizes the handful of ways a pasted service-account private key
 // commonly gets mangled when it goes through an env var UI:
 //  - Vercel env vars can't store real newlines, so the key is usually
@@ -74,6 +102,8 @@ export default async function handler(req, res) {
       scopes: ['https://www.googleapis.com/auth/spreadsheets'],
     })
     const { token } = await client.getAccessToken()
+
+    await ensureHeaderRow(token, GOOGLE_SHEET_ID)
 
     const extra = {}
     for (const key of Object.keys(lead)) {
