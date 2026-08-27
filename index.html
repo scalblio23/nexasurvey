@@ -645,19 +645,40 @@
     button.disabled = true;
     button.textContent = 'Submitting...';
 
-    // Form-encoded so the browser treats this as a simple request (no CORS
-    // preflight); Zapier maps each field separately.
-    fetch(WEBHOOK_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
-      body: params.toString(),
-      mode: 'no-cors',
-      keepalive: true
-    }).then(function () {
-      next();
-    }).catch(function () {
+    var lead = {};
+    params.forEach(function (value, key) { lead[key] = value; });
+
+    // Send to the Zapier webhook, and in parallel to our own backup endpoint
+    // (writes straight into a Google Sheet — doesn't depend on Zapier
+    // staying up or paid for). Each is independent: one failing doesn't
+    // stop the other, and neither blocks the thank-you screen.
+    Promise.allSettled([
+      // Form-encoded so the browser treats this as a simple request (no
+      // CORS preflight); Zapier maps each field separately.
+      fetch(WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+        body: params.toString(),
+        mode: 'no-cors',
+        keepalive: true
+      }),
+      fetch('/api/submit-lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(lead),
+        keepalive: true
+      })
+    ]).then(function (results) {
+      results.forEach(function (result, i) {
+        var label = i === 0 ? 'Zapier webhook' : 'Backup sheet';
+        if (result.status === 'rejected') {
+          console.error(label + ' error:', result.reason);
+        } else if (!result.value.ok && result.value.type !== 'opaque') {
+          console.error(label + ' error: HTTP ' + result.value.status);
+        }
+      });
       // The lead matters more than the confirmation, so don't dead-end the
-      // visitor if the request fails; show the thank-you step regardless.
+      // visitor if a request fails; show the thank-you step regardless.
       next();
     });
   }
