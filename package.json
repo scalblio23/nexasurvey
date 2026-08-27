@@ -1,0 +1,9 @@
+{
+  "name": "nexasurvey",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "google-auth-library": "^9.15.0"
+  }
+}
